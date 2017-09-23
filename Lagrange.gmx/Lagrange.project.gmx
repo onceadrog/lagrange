@@ -24,7 +24,6 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\scr_view_zoom.gml</script>
-    <script>scripts\script1.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\g_font</font>
