@@ -165,17 +165,16 @@ if (orbit != 0){    //Not "landed"
 draw_self();
 draw_set_colour(c_yellow);
 draw_set_font(g_font);
-draw_text(x+50,y+50, g_dist);
-draw_text(x+100,y+100,"Speed: " + string(direction));
-draw_text(x+100,y+150,string_format(speed,6,4));
-draw_text(x+100,y+200,"Grav: " + string(g_dir));
-draw_text(x+100,y+250,string_format(g_offset,6,4));
+draw_text(x+100,y+50,"Speed: " + string(direction));
+draw_text(x+100,y+110,string_format(speed,6,4));
+draw_text(x+100,y+170,"Grav: " + string(g_dir));
+draw_text(x+100,y+230,string_format(g_offset,6,4));
 
 // Destroy self if left the room
 if (x &lt; 0 || x &gt; room_width || y &lt; 0 || y &gt; room_height){
     //Make a new one first
     var inst;
-    inst = instance_create(random(1000)+earth.x-500,random(1000)+earth.y-500,spaceship1);
+    inst = instance_create(random(2000)+earth.x-1000,random(2000)+earth.y-1000,spaceship1);
     instance_destroy();
 }
 </string>

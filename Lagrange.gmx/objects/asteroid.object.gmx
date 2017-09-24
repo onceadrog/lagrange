@@ -29,36 +29,70 @@
 // Create random asteroid
 // type metallic, rocky, carbonaceous, icy
 // content (percentage): rock, ice, carbon, metal (sum=1, can be mined lower)
+randomize();
 direction = random(360);
 speed = random(4);
 rotation_speed = random(6)-3;
 type = irandom(3);
-display_values = 0;
+display_values = 1;
 switch type{
     case 0:
-    //Metallic
-    metal = round(random(0.9)*100)/100;
-    carbon = round(random(1-metal)*100)/100;
-    rock = 1-metal-carbon;
-    ice = 0;
+        //Metallic
+        type_name = "Metallic";
+        metal = round(random(0.9)*100)/100;
+        carbon = round(random(1-metal)*100)/100;
+        rock = 1-metal-carbon;
+        ice = 0;
+        break;
     case 1:
-    //Rocky
-    rock = round(random(0.8)*100)/100;
-    metal = round(random(1-rock)*100)/100;
-    carbon = round(random(1-metal-rock)*100)/100;
-    ice = 1-metal-carbon-rock;
+        //Rocky
+        type_name = "Rocky";
+        rock = round(random(0.8)*100)/100;
+        metal = round(random(1-rock)*100)/100;
+        carbon = round(random(1-metal-rock)*100)/100;
+        ice = 1-metal-carbon-rock;
+        break;
     case 2:
-    //Carbonaceous
-    carbon = round(random(0.6)*100)/100;
-    rock = round(random(1-carbon)*100)/100;
-    ice = 1-rock-carbon;
-    metal = 0;
+        //Carbonaceous
+        type_name = "Carbonaceous";
+        carbon = round(random(0.6)*100)/100;
+        rock = round(random(1-carbon)*100)/100;
+        ice = 1-rock-carbon;
+        metal = 0;
+        break;
     case 3:
-    //Icy
-    ice = round(random(0.9)*100)/100;
-    carbon = round(random(1-ice)*100)/100; 
-    rock = 1-ice-carbon;
-    metal = 0;
+        //Icy
+        type_name = "Icy";
+        ice = round(random(0.9)*100)/100;
+        carbon = round(random(1-ice)*100)/100; 
+        rock = 1-ice-carbon;
+        metal = 0;
+        break;
+}
+edge_created = irandom(3);
+switch edge_created {
+    case 0:
+        y=0;
+        if (direction &lt; 180) direction += 180;
+        break;
+    case 1:
+        x=room_width;
+        if (direction &gt; 270 || direction &lt; 90){
+            direction += 180;
+            if (direction &gt; 360) direction -= 360;
+        }
+        break;
+    case 2:
+        y = room_height;
+        if (direction &gt; 180) direction -= 180;
+        break;
+    case 3:
+        x=0;
+        if (direction &lt; 270 &amp;&amp; direction &gt; 90){
+            direction += 180;
+            if (direction &gt; 360) direction -= 360;
+        }
+        break;
 }
 </string>
           </argument>
@@ -139,17 +173,19 @@ draw_self();
 if (display_values % 2 == 1){   //Odd value
     draw_set_colour(c_yellow);
     draw_set_font(g_font);
+    draw_text(x+100,y-10, type_name);
     draw_text(x+100,y+50, "Metal: " + string (metal));
     draw_text(x+100,y+110,"Rock: " + string(rock));
     draw_text(x+100,y+170,"Carbon: " + string(carbon));
     draw_text(x+100,y+230,"Ice: " + string(ice));
     draw_text(x+100,y+290,"Grav: " + string(g_dir) + " " + string_format(g_offset,6,4));
+    draw_text(x+100,y+350,"Speed: " + string(speed));
 }
 // Destroy self if left the room
 if (x &lt; 0 || x &gt; room_width || y &lt; 0 || y &gt; room_height){
     //Make a new one first
     var inst;
-    inst = instance_create(random(1000)+750,random(1000)+750,spaceship1);
+    instance_create(random(3000)+3000,random(3000)+3000,asteroid);
     instance_destroy();
 }
 </string>

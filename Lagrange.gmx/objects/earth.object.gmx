@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>global.ns = -1;
 global.ns_spr=0;
-grav = 9.807;
+grav = 5; //should be 9.807 but sucking too much
 radius = 6371;
 rotation = 1;
                 //Northern hemisphere spins angle +1

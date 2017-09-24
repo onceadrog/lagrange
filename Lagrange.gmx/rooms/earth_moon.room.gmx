@@ -20,13 +20,13 @@ var inst;
 inst = instance_create(earth.x+3800,earth.y,moon);
 // Create a spaceship in a random spot
 var inst;
-inst = instance_create(random(1000)+earth.x-500,random(1000)+earth.y-500,spaceship1);
+inst = instance_create(random(2000)+earth.x-1000,random(2000)+earth.y-1000,spaceship1);
 // Create a shuttle in a random spot
 var inst;
-inst = instance_create(random(1000)+earth.x-500,random(1000)+earth.y-500,shuttle);
+inst = instance_create(random(2000)+earth.x-1000,random(2000)+earth.y-1000,shuttle);
 // Create a shuttle in a random spot
 var inst;
-inst = instance_create(random(1000)+earth.x-500,random(1000)+earth.y-500,shuttle);
+inst = instance_create(random(2000)+earth.x-1000,random(2000)+earth.y-1000,shuttle);;
 for (i = 0; i &lt; 10 ; i+= 1){
     // Create an asteroid
     var inst;

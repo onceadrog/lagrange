@@ -82,7 +82,7 @@ if (g_dist &gt; SOI_radius) {
             }
     }
     } else {
-    orbit_radius = SOI_radius/room_scale
+    orbit_radius = SOI_radius/room_scale + sprite_width/2
     rotation = SOI_rotation;
     orbit = 0; } // Landed
 switch (orbit) {    
@@ -101,10 +101,9 @@ switch (orbit) {
         break;
     case 1: // Wandering
         // Calculate g_offset
-        g_offset = 1/((sqr(g_dist/SOI_radius))/SOI_grav)/140;
-        // divided by 10 as too extreme?
-         vxg = lengthdir_x(g_offset, g_dir);
-         vyg = lengthdir_y(g_offset, g_dir);
+        g_offset = 1/((sqr(g_dist/SOI_radius))/SOI_grav);
+        vxg = lengthdir_x(g_offset, g_dir);
+        vyg = lengthdir_y(g_offset, g_dir);
         
         // Amend direction and speed
         // Apply g_offset,g_dir to speed,direction vector
