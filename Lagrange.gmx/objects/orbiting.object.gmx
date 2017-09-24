@@ -8,6 +8,32 @@
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
+    <event eventtype="0" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>orbit</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>1</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
@@ -26,14 +52,16 @@
           <argument>
             <kind>1</kind>
             <string>// Get g_offset parameters
+room_scale = camera.room_scale;    
+
 if (distance_to_object(moon)&lt;250){  //Assume moon SOI = 250px
-    g_dist = distance_to_object(moon)*camera.room_scale;
+    g_dist = distance_to_object(moon)*room_scale;
     SOI_grav = moon.grav;
     SOI_radius = moon.radius;
     SOI_rotation = moon.rotation;
     g_dir = point_direction(x, y, moon.x, moon.y);
 } else {
-    g_dist = distance_to_object(earth)*camera.room_scale;
+    g_dist = distance_to_object(earth)*room_scale;
     SOI_grav = earth.grav;
     SOI_rotation = earth.rotation;
     SOI_radius = earth.radius;
@@ -54,7 +82,7 @@ if (g_dist &gt; SOI_radius) {
             }
     }
     } else {
-    orbit_radius = SOI_radius/camera.room_scale
+    orbit_radius = SOI_radius/room_scale
     rotation = SOI_rotation;
     orbit = 0; } // Landed
 switch (orbit) {    
@@ -65,10 +93,11 @@ switch (orbit) {
         Angle = g_dir + global.ns; //Apply global.ns to direction
         if(Angle &gt;= 360) Angle -= 360;
         if(Angle &lt; 0) Angle += 360;
-        Orbit = 1000/camera.room_scale;
+        Orbit = 1000/room_scale;
         // Update position
         x = lengthdir_x(Orbit, Angle) + earth.x;
         y = lengthdir_y(Orbit, Angle) + earth.y;
+        instance_destroy(); //Crash landed!
         break;
     case 1: // Wandering
         // Calculate g_offset
@@ -87,14 +116,14 @@ switch (orbit) {
         // Update position and facing
         x = lengthdir_x(speed, direction) + x;
         y = lengthdir_y(speed, direction) + y;
-        image_angle = direction-90;
+        //image_angle = direction-90; Only for spaceships!
         break;
     case 2: // LEO
         // Orbital motion
         Angle += 6;
         if(Angle &gt;= 360) Angle -= 360;
         if(Angle &lt; 0) Angle += 360;
-        Orbit = 36000/camera.room_scale;
+        Orbit = 36000/room_scale;
         // Update position
         x = lengthdir_x(Orbit, Angle) + earth.x;
         y = lengthdir_y(Orbit, Angle) + earth.y;
@@ -104,7 +133,7 @@ switch (orbit) {
         Angle += 1;
         if(Angle &gt;= 360) Angle -= 360;
         if(Angle &lt; 0) Angle += 360;
-        Orbit = 1000/camera.room_scale;
+        Orbit = 1000/room_scale;
         // Update position
         x = lengthdir_x(Orbit, Angle) + earth.x;
         y = lengthdir_y(Orbit, Angle) + earth.y;

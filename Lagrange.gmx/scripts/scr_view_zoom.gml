@@ -5,7 +5,7 @@ var view = argument[1];
 
 // Limit zooming
 if (view_wview[view] >= room_width*0.9 && amount > 1) exit;
-if (view_wview[view] <= 500 && amount < 1) exit;
+if (view_wview[view] <= 1000 && amount < 1) exit;
 
 // Get the offset
 var offx = abs(view_wview[view]*amount - view_wview[view]);

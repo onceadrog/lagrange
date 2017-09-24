@@ -25,7 +25,8 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>direction = random(360);
+            <string>event_inherited();
+direction = random(360);
 speed = random(5);
 image_angle = direction-90;
 </string>
@@ -50,48 +51,10 @@ image_angle = direction-90;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>// Get g_offset parameters
-if (distance_to_object(moon)&lt;250){  //Assume moon SOI = 250px
-    g_dist = distance_to_object(moon)*camera.room_scale;
-    SOI_grav = moon.grav;
-    SOI_radius = moon.radius;
-    SOI_rotation = moon.rotation;
-    g_dir = point_direction(x, y, moon.x, moon.y);
-} else {
-    g_dist = distance_to_object(earth)*camera.room_scale;
-    SOI_grav = earth.grav;
-    SOI_rotation = earth.rotation;
-    SOI_radius = earth.radius; 
-    g_dir = point_direction(x, y,earth.x, earth.y); 
+            <string>event_inherited();
+if (orbit != 0){    //Not "landed"
+    image_angle = direction-90; //Point in direction of travel
 }
-
-// Fall to surface
-if g_dist &gt; SOI_radius {
-    grounded = false;
-    }else {
-    orbit_radius = SOI_radius/camera.room_scale
-    rotation = SOI_rotation;
-    grounded = true; }
-    
-// Calculate g_offset
-g_offset = 1/((sqr(g_dist/SOI_radius))/SOI_grav)/10;
-// divided by 10 as too extreme?
- vxg = lengthdir_x(g_offset, g_dir);
- vyg = lengthdir_y(g_offset, g_dir);
-//vyg = g_offset*dsin(g_dir);
-//vxg = g_offset*dcos(g_dir);
-
-// Amend direction and speed
-// Apply g_offset,g_dir to speed,direction vector
-vx = lengthdir_x(speed, direction);
-vy = lengthdir_y(speed, direction);
-speed = sqrt(sqr(vx+vxg) + sqr(vy+vyg));
-direction = point_direction(0,0,vxg+vx,vyg+vy);
-
-// Update position and facing
-x = lengthdir_x(speed, direction) + x;
-y = lengthdir_y(speed, direction) + y;
-image_angle = direction+90;
 </string>
           </argument>
         </arguments>
@@ -144,6 +107,46 @@ image_angle = direction+90;
     <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
+        <id>518</id>
+        <kind>0</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_draw_ellipse_gradient</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>-1</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>0</kind>
+            <string>-100</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>-100</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>100</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>100</string>
+          </argument>
+          <argument>
+            <kind>13</kind>
+            <string>0</string>
+          </argument>
+          <argument>
+            <kind>13</kind>
+            <string>32768</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
         <id>603</id>
         <kind>7</kind>
         <userelative>0</userelative>
@@ -172,7 +175,7 @@ draw_text(x+100,y+250,string_format(g_offset,6,4));
 if (x &lt; 0 || x &gt; room_width || y &lt; 0 || y &gt; room_height){
     //Make a new one first
     var inst;
-    inst = instance_create(random(1000)+750,random(1000)+750,spaceship1);
+    inst = instance_create(random(1000)+earth.x-500,random(1000)+earth.y-500,spaceship1);
     instance_destroy();
 }
 </string>

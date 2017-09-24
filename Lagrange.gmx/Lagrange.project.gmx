@@ -6,20 +6,17 @@
   <NewExtensions/>
   <sounds name="sound"/>
   <sprites name="sprites">
-    <sprite>sprites\earth_south_768px</sprite>
-    <sprite>sprites\earth_south_384px</sprite>
-    <sprite>sprites\earth_south_192px</sprite>
-    <sprite>sprites\earth_south_96px</sprite>
-    <sprite>sprites\earth_north_768px</sprite>
-    <sprite>sprites\earth_north_384px</sprite>
-    <sprite>sprites\earth_north_192px</sprite>
-    <sprite>sprites\earth_north_96px</sprite>
     <sprite>sprites\moon_192px</sprite>
     <sprite>sprites\moon_48px</sprite>
     <sprite>sprites\moon_24px</sprite>
     <sprite>sprites\spr_station</sprite>
     <sprite>sprites\spr_spaceship1</sprite>
     <sprite>sprites\spr_shuttle</sprite>
+    <sprite>sprites\earth_north_256</sprite>
+    <sprite>sprites\earth_north_128</sprite>
+    <sprite>sprites\earth_south_256</sprite>
+    <sprite>sprites\earth_south_128</sprite>
+    <sprite>sprites\asteroid_metal_64</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\starfield</background>
@@ -41,6 +38,7 @@
     <object>objects\SOI</object>
     <object>objects\orbiting</object>
     <object>objects\shuttle</object>
+    <object>objects\asteroid</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\earth_moon</room>
