@@ -33,6 +33,126 @@
           </argument>
         </arguments>
       </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>display_values</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>1</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>killme</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>false</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>g_dir</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>0</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>g_offset</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>0</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>launch_countdown</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>0</string>
+          </argument>
+        </arguments>
+      </action>
     </event>
     <event eventtype="3" enumb="0">
       <action>
@@ -55,49 +175,46 @@
 room_scale = camera.room_scale;    
 
 if (distance_to_object(moon)&lt;250){  //Assume moon SOI = 250px
-    g_dist = distance_to_object(moon)*room_scale;
-    SOI_grav = moon.grav;
+    SOI_grav = moon.grav/10;
     SOI_radius = moon.radius;
     SOI_rotation = moon.rotation;
+    g_dist = distance_to_object(moon)*room_scale + SOI_radius;
+    g_dist -= SOI_radius;
     g_dir = point_direction(x, y, moon.x, moon.y);
 } else {
-    g_dist = distance_to_object(earth)*room_scale;
-    SOI_grav = earth.grav;
+    SOI_grav = earth.grav/10;
     SOI_rotation = earth.rotation;
     SOI_radius = earth.radius;
+    g_dist = distance_to_object(earth)*room_scale + SOI_radius;
+    g_dist -= SOI_radius;
     g_dir = point_direction(x, y,earth.x, earth.y); 
 }
-
-// Fall to surface
-if (g_dist &gt; SOI_radius) {
+// Check launch countdown and launch the shuttle if required
+if (orbit==0 &amp;&amp; launch_countdown &lt;= 0){ 
+    speed = 23;
     orbit = 1;
-    if (speed &lt; 6){
-        if (g_dist &gt; 500 &amp;&amp; g_dist &lt; 8000 &amp;&amp; speed &lt; 6 &amp;&amp; speed &gt; 5) {
-            orbit = 2;    //LEO
-            Angle = g_dir;
-            }
-        if (g_dist &gt; 34000 &amp;&amp; g_dist &lt; 38000 &amp;&amp; speed &lt; 3 &amp;&amp; speed &gt; 2) {
-            orbit = 3; //GEO
-            Angle = g_dir;
-            }
+    display_values = 1;
+    // Get off the ground first!
+    x = lengthdir_x(speed, direction) + x;
+    y = lengthdir_y(speed, direction) + y;
+    //Gravity turn
+    direction -= 45*global.ns;
     }
-    } else {
-    orbit_radius = SOI_radius/room_scale + sprite_width/2
-    rotation = SOI_rotation;
-    orbit = 0; } // Landed
+
 switch (orbit) {    
     case 0: // Landed
-        // Tidally locked rotation
-        image_angle = point_direction(x, y, earth.x, earth.y);
         // Orbital motion
-        Angle = g_dir + global.ns; //Apply global.ns to direction
+        //Enforce valid "orbit" at ground level
+        //Orbit = SOI_radius/room_scale + sprite_width/2;
+        Angle += SOI_rotation;
         if(Angle &gt;= 360) Angle -= 360;
         if(Angle &lt; 0) Angle += 360;
-        Orbit = 1000/room_scale;
         // Update position
         x = lengthdir_x(Orbit, Angle) + earth.x;
         y = lengthdir_y(Orbit, Angle) + earth.y;
-        instance_destroy(); //Crash landed!
+        // Tidally locked rotation
+        direction = point_direction(earth.x, earth.y, x, y);
+        image_angle = direction -90;
         break;
     case 1: // Wandering
         // Calculate g_offset
@@ -110,12 +227,13 @@ switch (orbit) {
         vx = lengthdir_x(speed, direction);
         vy = lengthdir_y(speed, direction);
         speed = sqrt(sqr(vx+vxg) + sqr(vy+vyg));
+        if (speed&gt;12) speed=12;
         direction = point_direction(0,0,vxg+vx,vyg+vy);
         
         // Update position and facing
         x = lengthdir_x(speed, direction) + x;
         y = lengthdir_y(speed, direction) + y;
-        //image_angle = direction-90; Only for spaceships!
+        image_angle = direction-90;
         break;
     case 2: // LEO
         // Orbital motion

@@ -29,6 +29,7 @@
 direction = random(360);
 speed = random(6);
 image_angle = direction-90;
+launch_countdown = 0;
 </string>
           </argument>
         </arguments>
@@ -52,8 +53,44 @@ image_angle = direction-90;
           <argument>
             <kind>1</kind>
             <string>event_inherited();
-if (orbit != 0){    //Not "landed"
-    image_angle = direction-90; //Point in direction of travel
+//if (orbit != 0){    //Not "landed"
+//    image_angle = direction-90; //Point in direction of travel
+//}
+if (launch_countdown &gt;0) launch_countdown -= 1;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="SOI">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>// Land the shuttle
+if (orbit != 0){    //Not already landed
+    orbit=0;
+    speed = 0;
+    display_values = 0;
+    launch_countdown = 90;
+    Orbit = earth.sprite_width/2 + sprite_width/2 + 1;
+    Angle = point_direction(earth.x, earth.y, x, y);
+    display_values = 0;
+    //x = lengthdir_x(Orbit, Angle) + earth.x;
+    //y = lengthdir_y(Orbit, Angle) + earth.y;
+    //image_angle = point_direction(x, y, earth.x, earth.y)+90;
 }
 </string>
           </argument>
@@ -119,19 +156,22 @@ if (orbit != 0){    //Not "landed"
             <kind>1</kind>
             <string>//Draw the bits
 draw_self();
-draw_set_colour(c_yellow);
-draw_set_font(g_font);
-draw_text(x+100,y+50,"Speed: " + string(direction));
-draw_text(x+100,y+110,string_format(speed,6,4));
-draw_text(x+100,y+170,"Grav: " + string(g_dir));
-draw_text(x+100,y+230,string_format(g_offset,6,4));
-
+if (display_values == 1){
+    draw_set_colour(c_yellow);
+    draw_set_font(g_font);
+    draw_text(x+100,y+50,"Speed: " + string(direction));
+    draw_text(x+100,y+110,string_format(speed,6,4));
+    draw_text(x+100,y+170,"Grav: " + string(g_dir));
+    draw_text(x+100,y+230,string_format(g_offset,6,4));
+}
 // Destroy self if left the room
 if (x &lt; 0 || x &gt; room_width || y &lt; 0 || y &gt; room_height){
     //Make a new one first
     var inst;
     inst = instance_create(random(2000)+earth.x-1000,random(2000)+earth.y-1000,spaceship1);
     instance_destroy();
+} else {
+    if (killme) instance_destroy();
 }
 </string>
           </argument>

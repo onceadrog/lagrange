@@ -92,10 +92,10 @@ if (right &amp;&amp; view_xview&lt;(9000-amount-view_wview)) view_xview[view] +=
 
 // Control the zoom
 if (mouse_wheel_up()){
-    scr_view_zoom(-.1,view);
+    scr_view_zoom(-1,view);
 }
 if (mouse_wheel_down()){
-    scr_view_zoom(.1,view);
+    scr_view_zoom(1,view);
 }
 
 
