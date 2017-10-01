@@ -18,9 +18,7 @@
     <sprite>sprites\earth_south_128</sprite>
     <sprite>sprites\asteroid_metal_64</sprite>
   </sprites>
-  <backgrounds name="background">
-    <background>background\starfield</background>
-  </backgrounds>
+  <backgrounds name="background"/>
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\scr_view_zoom.gml</script>

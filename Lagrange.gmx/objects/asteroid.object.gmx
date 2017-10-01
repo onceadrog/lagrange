@@ -196,7 +196,7 @@ instance_destroy();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//Draw the bits
+            <string>//Draw the bits (overrides orbiting object display)
 draw_self();
 if (display_values % 2 == 1 &amp;&amp; !killme){   //Odd value
     draw_set_colour(c_yellow);

@@ -31,7 +31,13 @@ for (i = 0; i &lt; 10 ; i+= 1){
     // Create an asteroid
     var inst;
     inst = instance_create(random(3000)+3000,random(3000)+3000,asteroid);
-}</code>
+}
+// Create a shuttle in a GEO
+var inst;
+inst = instance_create(422+earth.x,422+earth.y,shuttle);
+inst.Orbit = 422;
+inst.Angle = 0;
+inst.orbit = 3;</code>
   <enableViews>-1</enableViews>
   <clearViewBackground>0</clearViewBackground>
   <clearDisplayBuffer>-1</clearDisplayBuffer>
